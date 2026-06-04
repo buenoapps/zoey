@@ -1,98 +1,123 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
+import { AnimalCard } from '@/components/animal-card';
+import { CategoryCard } from '@/components/category-card';
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { ZoeyMascot } from '@/components/zoey-mascot';
+import {
+  Categories,
+  getAnimalsByCategory,
+  getCategory,
+  type CategoryId,
+} from '@/data/animals';
+import { BottomTabInset, Brand, Fonts, MaxContentWidth, Spacing } from '@/constants/theme';
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
+/** Split a list into rows of two for an even 2-column grid. */
+function toRows<T>(items: T[]): [T, T?][] {
+  const rows: [T, T?][] = [];
+  for (let i = 0; i < items.length; i += 2) {
+    rows.push([items[i], items[i + 1]]);
   }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
+  return rows;
 }
 
 export default function HomeScreen() {
+  const [selected, setSelected] = useState<CategoryId>(Categories[0].id);
+  const category = getCategory(selected);
+  const rows = toRows(getAnimalsByCategory(selected));
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
+    <View style={styles.background}>
+      <SafeAreaView edges={['top']} style={styles.safeArea}>
+        <ScrollView
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}>
+          <ZoeyMascot />
+
+          <ThemedText style={styles.prompt}>Pick a group!</ThemedText>
+
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.categoryRow}>
+            {Categories.map((item) => (
+              <CategoryCard
+                key={item.id}
+                category={item}
+                selected={item.id === selected}
+                onPress={() => setSelected(item.id)}
+              />
+            ))}
+          </ScrollView>
+
+          <ThemedText style={styles.sectionTitle}>
+            {category.emoji} {category.name}
           </ThemedText>
-        </ThemedView>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
+          <View style={styles.grid}>
+            {rows.map((row, index) => (
+              <View key={index} style={styles.gridRow}>
+                <AnimalCard animal={row[0]} color={category.color} />
+                {row[1] ? (
+                  <AnimalCard animal={row[1]} color={category.color} />
+                ) : (
+                  <View style={styles.gridSpacer} />
+                )}
+              </View>
+            ))}
+          </View>
+        </ScrollView>
       </SafeAreaView>
-    </ThemedView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: Brand.sky,
   },
   safeArea: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
+  },
+  content: {
+    width: '100%',
     maxWidth: MaxContentWidth,
+    alignSelf: 'center',
+    paddingHorizontal: Spacing.three,
+    paddingTop: Spacing.three,
+    paddingBottom: BottomTabInset + Spacing.five,
+    gap: Spacing.three,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
+  prompt: {
+    fontFamily: Fonts.rounded,
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#3A3A4A',
     textAlign: 'center',
   },
-  code: {
-    textTransform: 'uppercase',
+  categoryRow: {
+    gap: Spacing.two,
+    paddingHorizontal: Spacing.one,
+    paddingVertical: Spacing.one,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  sectionTitle: {
+    fontFamily: Fonts.rounded,
+    fontSize: 26,
+    fontWeight: '800',
+    color: '#3A3A4A',
+  },
+  grid: {
+    gap: Spacing.two,
+  },
+  gridRow: {
+    flexDirection: 'row',
+    gap: Spacing.two,
+  },
+  gridSpacer: {
+    flex: 1,
   },
 });

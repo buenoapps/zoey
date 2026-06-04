@@ -61,5 +61,32 @@ export const Spacing = {
   six: 64,
 } as const;
 
+/** Rounded corner sizes for Zoey's playful, kid-friendly cards. */
+export const Radius = {
+  small: 12,
+  medium: 20,
+  large: 28,
+  pill: 999,
+} as const;
+
+/**
+ * Zoey brand palette — bright and friendly. Used across the kids UI on top of
+ * the per-category colors defined in `src/data/animals.ts`.
+ */
+export const Brand = {
+  /** Main Zoey color (her collar / accents). */
+  primary: '#FF6B6B',
+  /** Sky background behind the mascot and screens. */
+  sky: '#FFF4E0',
+  skyDark: '#1B1A2E',
+  /** Soft sunshine accent. */
+  sunshine: '#FFD166',
+  /** Zoey's fur tone for the mascot. */
+  fur: '#C98A52',
+  furDark: '#A66A38',
+  /** Text that sits on top of bright category colors. */
+  onColor: '#FFFFFF',
+} as const;
+
 export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
 export const MaxContentWidth = 800;
