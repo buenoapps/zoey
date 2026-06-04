@@ -1,6 +1,33 @@
-# Welcome to your Expo app 👋
+# Zoey 🐶 — Learn Animals & Play Their Sounds
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Zoey is a playful kids app for learning animals and hearing the sounds they make.
+Children meet **Zoey, a friendly dog with big ears** (she hears really well!), browse
+animals grouped into kid-friendly categories — **Farm, Pets, Wild, Birds, Bugs, Ocean,
+Reptiles, Dinos** — and tap any animal to hear its sound and watch it wiggle.
+
+Built with [Expo](https://expo.dev) (SDK 56), expo-router, and `expo-audio`.
+
+### How it's put together
+
+- `src/data/animals.ts` — the list of animals and categories (emoji + sound label).
+- `src/data/sounds.ts` — a static `require` map from animal id → bundled audio file.
+- `src/context/sound-provider.tsx` — one shared `expo-audio` player; `useSound().playSound(id)`.
+- `src/components/` — `zoey-mascot`, `category-card`, and `animal-card` (with a tap bounce).
+- `src/app/index.tsx` — Home: Zoey + category picker + animal grid.
+- `src/app/explore.tsx` — "Animals": every animal grouped by category.
+
+### Sounds
+
+The app ships with **placeholder sounds**: short, distinct tones generated per animal so
+everything is playable out of the box with no external media. Regenerate them with:
+
+```bash
+npm run generate-sounds
+```
+
+To use **real recordings**, drop your own files into `assets/sounds/` using the same
+filename as the animal id (e.g. `cow.wav`). `.mp3` works too — update the matching
+`require(...)` in `src/data/sounds.ts` to point at the new extension.
 
 ## Get started
 
