@@ -21,7 +21,7 @@ const ANIMAL_IDS = [
   // Farm
   'cow', 'pig', 'horse', 'sheep', 'goat', 'chicken', 'rooster', 'duck', 'turkey', 'donkey',
   // Pets
-  'dog', 'cat', 'rabbit', 'parrot', 'mouse',
+  'dog', 'cat', 'rabbit', 'guineapig', 'parrot', 'mouse',
   // Wild
   'lion', 'tiger', 'elephant', 'monkey', 'bear', 'wolf', 'fox',
   // Birds
@@ -32,8 +32,6 @@ const ANIMAL_IDS = [
   'dolphin', 'whale', 'seal',
   // Reptiles
   'frog', 'snake', 'crocodile', 'lizard',
-  // Dinos
-  'trex', 'dino',
 ];
 
 const SAMPLE_RATE = 22050;
