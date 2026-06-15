@@ -1,23 +1,26 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { type Group } from '@/data/animals';
+import { useI18n } from '@/context/language-provider';
+import { type Category } from '@/data/animals';
 import { Fonts, Radius, Spacing } from '@/constants/theme';
 
 type CategoryCardProps = {
-  category: Group;
+  category: Category;
   selected: boolean;
   onPress: () => void;
 };
 
-/** A rounded, colorful chip used to pick a group on the Home screen. */
+/** A rounded, colorful chip used to pick a category on the Home screen. */
 export function CategoryCard({ category, selected, onPress }: CategoryCardProps) {
+  const { tCategory } = useI18n();
+  const label = tCategory(category.id);
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
       accessibilityState={{ selected }}
-      accessibilityLabel={category.name}
+      accessibilityLabel={label}
       style={({ pressed }) => [styles.pressable, pressed && styles.pressed]}>
       <View
         style={[
@@ -26,7 +29,7 @@ export function CategoryCard({ category, selected, onPress }: CategoryCardProps)
           selected && styles.chipSelected,
         ]}>
         <ThemedText style={styles.emoji}>{category.emoji}</ThemedText>
-        <ThemedText style={styles.label}>{category.name}</ThemedText>
+        <ThemedText style={styles.label}>{label}</ThemedText>
       </View>
     </Pressable>
   );

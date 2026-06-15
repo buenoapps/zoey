@@ -12,17 +12,10 @@ export type CategoryId = 'pets' | 'farm' | 'wild' | 'birds' | 'bugs' | 'ocean' |
 
 export type Category = {
   id: CategoryId;
+  /** English fallback name; localized names live in `src/i18n/translations.ts`. */
   name: string;
   emoji: string;
   /** Bright background color for this category's cards. */
-  color: string;
-};
-
-/** A selectable group on the Home screen — every category plus a special "All". */
-export type Group = {
-  id: CategoryId | 'all';
-  name: string;
-  emoji: string;
   color: string;
 };
 
@@ -45,12 +38,6 @@ export const Categories: Category[] = [
   { id: 'ocean', name: 'Ocean', emoji: '🐬', color: '#219EBC' },
   { id: 'reptiles', name: 'Reptiles', emoji: '🐸', color: '#6A994E' },
 ];
-
-/** Special "show everything" group, shown first on Home. */
-export const AllGroup: Group = { id: 'all', name: 'All', emoji: '🐾', color: '#9B5DE5' };
-
-/** Group chips for the Home screen: All first, then every category. */
-export const HomeGroups: Group[] = [AllGroup, ...Categories];
 
 export const Animals: Animal[] = [
   // Pets 🐱
@@ -108,23 +95,11 @@ export const Animals: Animal[] = [
   { id: 'lizard', name: 'Lizard', emoji: '🦎', categories: ['reptiles'], sound: 'Chirp' },
 ];
 
-/** Animals in a group; the special `all` group returns every animal. */
-export function getAnimalsByGroup(id: CategoryId | 'all'): Animal[] {
-  if (id === 'all') {
-    return Animals;
-  }
+/** Animals that belong to a category. */
+export function getAnimalsByCategory(id: CategoryId): Animal[] {
   return Animals.filter((animal) => animal.categories.includes(id));
-}
-
-export function getGroup(id: CategoryId | 'all'): Group {
-  return HomeGroups.find((group) => group.id === id) ?? AllGroup;
 }
 
 export function getCategory(id: CategoryId): Category {
   return Categories.find((category) => category.id === id) ?? Categories[0];
-}
-
-/** The card color for an animal — driven by its first (primary) category. */
-export function getAnimalColor(animal: Animal): string {
-  return getCategory(animal.categories[0]).color;
 }

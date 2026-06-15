@@ -8,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { ThemedText } from '@/components/themed-text';
+import { useI18n } from '@/context/language-provider';
 import { useSound } from '@/context/sound-provider';
 import { type Animal } from '@/data/animals';
 import { Fonts, Radius, Spacing } from '@/constants/theme';
@@ -21,6 +22,8 @@ type AnimalCardProps = {
 /** A big, tappable tile that plays an animal's sound and bounces. */
 export function AnimalCard({ animal, color }: AnimalCardProps) {
   const { playSound } = useSound();
+  const { t, tAnimal } = useI18n();
+  const name = tAnimal(animal.id);
   const scale = useSharedValue(1);
   const rotate = useSharedValue(0);
 
@@ -30,15 +33,15 @@ export function AnimalCard({ animal, color }: AnimalCardProps) {
 
   const onPress = () => {
     playSound(animal.id);
-    // Quick playful pop that snaps straight back to its original size.
+    // A soft, springy pop that grows then eases back to its original size.
     scale.value = withSequence(
-      withTiming(1.12, { duration: 90, easing: Easing.out(Easing.quad) }),
-      withTiming(1, { duration: 110, easing: Easing.out(Easing.quad) }),
+      withTiming(1.12, { duration: 140, easing: Easing.out(Easing.quad) }),
+      withTiming(1, { duration: 300, easing: Easing.out(Easing.cubic) }),
     );
     rotate.value = withSequence(
-      withTiming(-6, { duration: 60 }),
-      withTiming(6, { duration: 90 }),
-      withTiming(0, { duration: 60 }),
+      withTiming(-6, { duration: 90 }),
+      withTiming(6, { duration: 140 }),
+      withTiming(0, { duration: 110 }),
     );
   };
 
@@ -46,11 +49,11 @@ export function AnimalCard({ animal, color }: AnimalCardProps) {
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel={`${animal.name}, says ${animal.sound}`}
+      accessibilityLabel={`${name}, ${t('says')} ${animal.sound}`}
       style={styles.pressable}>
       <Animated.View style={[styles.card, { backgroundColor: color }, animatedStyle]}>
         <ThemedText style={styles.emoji}>{animal.emoji}</ThemedText>
-        <ThemedText style={styles.name}>{animal.name}</ThemedText>
+        <ThemedText style={styles.name}>{name}</ThemedText>
         <ThemedText style={styles.sound}>{animal.sound}</ThemedText>
       </Animated.View>
     </Pressable>
