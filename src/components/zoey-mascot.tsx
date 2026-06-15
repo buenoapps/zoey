@@ -11,6 +11,7 @@ import Animated, {
 
 import { ThemedText } from '@/components/themed-text';
 import { Brand, Fonts, Radius, Spacing } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 type ZoeyMascotProps = {
   /** What Zoey says in her speech bubble. */
@@ -23,6 +24,7 @@ type ZoeyMascotProps = {
  * the whole head does a gentle idle wiggle.
  */
 export function ZoeyMascot({ message = "Hi, I'm Zoey! Tap an animal to hear it! 🐾" }: ZoeyMascotProps) {
+  const theme = useTheme();
   const tilt = useSharedValue(0);
 
   useEffect(() => {
@@ -48,8 +50,8 @@ export function ZoeyMascot({ message = "Hi, I'm Zoey! Tap an animal to hear it! 
         <ThemedText style={styles.face}>🐶</ThemedText>
       </Animated.View>
 
-      <View style={styles.bubble}>
-        <ThemedText style={styles.bubbleText}>{message}</ThemedText>
+      <View style={[styles.bubble, { backgroundColor: theme.bubbleBg }]}>
+        <ThemedText style={[styles.bubbleText, { color: theme.bubbleText }]}>{message}</ThemedText>
       </View>
     </View>
   );
@@ -90,7 +92,6 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '-24deg' }],
   },
   bubble: {
-    backgroundColor: '#FFFFFF',
     borderRadius: Radius.large,
     paddingVertical: Spacing.two,
     paddingHorizontal: Spacing.three,
@@ -105,7 +106,6 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.rounded,
     fontSize: 16,
     fontWeight: '700',
-    color: '#3A3A4A',
     textAlign: 'center',
   },
 });

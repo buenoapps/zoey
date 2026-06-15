@@ -14,7 +14,8 @@ import {
   type Animal,
   type CategoryId,
 } from '@/data/animals';
-import { Brand, Fonts, MaxContentWidth, Spacing } from '@/constants/theme';
+import { Fonts, MaxContentWidth, Spacing } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 /** Split a list into rows of two for an even 2-column grid. */
 function toRows(items: Animal[]): [Animal, Animal?][] {
@@ -27,22 +28,25 @@ function toRows(items: Animal[]): [Animal, Animal?][] {
 
 export default function HomeScreen() {
   const [selected, setSelected] = useState<CategoryId | 'all'>('all');
+  const theme = useTheme();
   const group = getGroup(selected);
   const rows = toRows(getAnimalsByGroup(selected));
 
   return (
-    <View style={styles.background}>
+    <View style={[styles.background, { backgroundColor: theme.screenBg }]}>
       <SafeAreaView edges={['top', 'bottom']} style={styles.safeArea}>
         <ScrollView
+          style={styles.scroll}
           contentContainerStyle={styles.content}
           showsVerticalScrollIndicator={false}>
           <ZoeyMascot />
 
-          <ThemedText style={styles.prompt}>Pick a group!</ThemedText>
+          <ThemedText style={[styles.prompt, { color: theme.heading }]}>Pick a group!</ThemedText>
 
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
+            style={styles.categoryScroll}
             contentContainerStyle={styles.categoryRow}>
             {HomeGroups.map((item) => (
               <CategoryCard
@@ -54,7 +58,7 @@ export default function HomeScreen() {
             ))}
           </ScrollView>
 
-          <ThemedText style={styles.sectionTitle}>
+          <ThemedText style={[styles.sectionTitle, { color: theme.heading }]}>
             {group.emoji} {group.name}
           </ThemedText>
 
@@ -85,16 +89,21 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: Brand.sky,
   },
   safeArea: {
     flex: 1,
-    alignItems: 'center',
+    width: '100%',
+  },
+  scroll: {
+    flex: 1,
+    width: '100%',
   },
   content: {
     width: '100%',
     maxWidth: MaxContentWidth,
-    alignSelf: 'center',
+    // Center the content column on wide screens without letting the
+    // horizontal chip row stretch the page (which caused a horizontal scrollbar).
+    marginHorizontal: 'auto',
     paddingHorizontal: Spacing.three,
     paddingTop: Spacing.three,
     paddingBottom: Spacing.five,
@@ -104,8 +113,11 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.rounded,
     fontSize: 18,
     fontWeight: '800',
-    color: '#3A3A4A',
     textAlign: 'center',
+  },
+  categoryScroll: {
+    width: '100%',
+    flexGrow: 0,
   },
   categoryRow: {
     gap: Spacing.two,
@@ -116,7 +128,6 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.rounded,
     fontSize: 26,
     fontWeight: '800',
-    color: '#3A3A4A',
   },
   grid: {
     gap: Spacing.two,
