@@ -1,9 +1,9 @@
 import { Pressable, StyleSheet } from 'react-native';
 import Animated, {
+  Easing,
   useAnimatedStyle,
   useSharedValue,
   withSequence,
-  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 
@@ -30,15 +30,15 @@ export function AnimalCard({ animal, color }: AnimalCardProps) {
 
   const onPress = () => {
     playSound(animal.id);
-    // Playful bounce + wiggle on every tap.
+    // Quick playful pop that snaps straight back to its original size.
     scale.value = withSequence(
-      withSpring(1.12, { damping: 6, stiffness: 220 }),
-      withSpring(1, { damping: 8, stiffness: 220 }),
+      withTiming(1.12, { duration: 90, easing: Easing.out(Easing.quad) }),
+      withTiming(1, { duration: 110, easing: Easing.out(Easing.quad) }),
     );
     rotate.value = withSequence(
-      withTiming(-6, { duration: 70 }),
-      withTiming(6, { duration: 110 }),
-      withTiming(0, { duration: 70 }),
+      withTiming(-6, { duration: 60 }),
+      withTiming(6, { duration: 90 }),
+      withTiming(0, { duration: 60 }),
     );
   };
 

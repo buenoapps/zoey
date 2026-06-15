@@ -45,7 +45,7 @@ export default function HomeScreen() {
 
           <ScrollView
             horizontal
-            showsHorizontalScrollIndicator={false}
+            showsHorizontalScrollIndicator
             style={styles.categoryScroll}
             contentContainerStyle={styles.categoryRow}>
             {HomeGroups.map((item) => (
