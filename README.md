@@ -7,6 +7,7 @@ Reptiles** — and tap any animal to hear its sound and watch it wiggle. An anim
 live in more than one group (a cat is both a pet and a farm animal).
 
 It's a single screen (no tabs): the **All** group shows every animal at once.
+The UI follows the system **light/dark** appearance.
 
 Built with [Expo](https://expo.dev) (SDK 56), expo-router, and `expo-audio`.
 

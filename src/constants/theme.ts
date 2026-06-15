@@ -14,6 +14,11 @@ export const Colors = {
     backgroundElement: '#F0F0F3',
     backgroundSelected: '#E0E1E6',
     textSecondary: '#60646C',
+    // Zoey kids UI
+    screenBg: '#FFF4E0',
+    heading: '#3A3A4A',
+    bubbleBg: '#FFFFFF',
+    bubbleText: '#3A3A4A',
   },
   dark: {
     text: '#ffffff',
@@ -21,6 +26,11 @@ export const Colors = {
     backgroundElement: '#212225',
     backgroundSelected: '#2E3135',
     textSecondary: '#B0B4BA',
+    // Zoey kids UI
+    screenBg: '#15141F',
+    heading: '#F2F2F7',
+    bubbleBg: '#26253A',
+    bubbleText: '#F2F2F7',
   },
 } as const;
 
