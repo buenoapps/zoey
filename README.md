@@ -2,19 +2,21 @@
 
 Zoey is a playful kids app for learning animals and hearing the sounds they make.
 Children meet **Zoey, a friendly dog with big ears** (she hears really well!), browse
-animals grouped into kid-friendly categories — **Farm, Pets, Wild, Birds, Bugs, Ocean,
-Reptiles, Dinos** — and tap any animal to hear its sound and watch it wiggle.
+animals grouped into kid-friendly groups — **All, Pets, Farm, Wild, Birds, Bugs, Ocean,
+Reptiles** — and tap any animal to hear its sound and watch it wiggle. An animal can
+live in more than one group (a cat is both a pet and a farm animal).
+
+It's a single screen (no tabs): the **All** group shows every animal at once.
 
 Built with [Expo](https://expo.dev) (SDK 56), expo-router, and `expo-audio`.
 
 ### How it's put together
 
-- `src/data/animals.ts` — the list of animals and categories (emoji + sound label).
+- `src/data/animals.ts` — the list of animals and groups (emoji + sound label).
 - `src/data/sounds.ts` — a static `require` map from animal id → bundled audio file.
 - `src/context/sound-provider.tsx` — one shared `expo-audio` player; `useSound().playSound(id)`.
 - `src/components/` — `zoey-mascot`, `category-card`, and `animal-card` (with a tap bounce).
-- `src/app/index.tsx` — Home: Zoey + category picker + animal grid.
-- `src/app/explore.tsx` — "Animals": every animal grouped by category.
+- `src/app/index.tsx` — the single Home screen: Zoey + group picker + animal grid.
 
 ### Sounds
 

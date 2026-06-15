@@ -1,16 +1,16 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { type Category } from '@/data/animals';
+import { type Group } from '@/data/animals';
 import { Fonts, Radius, Spacing } from '@/constants/theme';
 
 type CategoryCardProps = {
-  category: Category;
+  category: Group;
   selected: boolean;
   onPress: () => void;
 };
 
-/** A rounded, colorful chip used to pick a category on the Home screen. */
+/** A rounded, colorful chip used to pick a group on the Home screen. */
 export function CategoryCard({ category, selected, onPress }: CategoryCardProps) {
   return (
     <Pressable

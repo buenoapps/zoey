@@ -24,6 +24,7 @@ export const SoundFiles: Record<string, number> = {
   rabbit: require('@/assets/sounds/rabbit.wav'),
   parrot: require('@/assets/sounds/parrot.wav'),
   mouse: require('@/assets/sounds/mouse.wav'),
+  guineapig: require('@/assets/sounds/guineapig.wav'),
 
   // Wild
   lion: require('@/assets/sounds/lion.wav'),
@@ -58,8 +59,4 @@ export const SoundFiles: Record<string, number> = {
   snake: require('@/assets/sounds/snake.wav'),
   crocodile: require('@/assets/sounds/crocodile.wav'),
   lizard: require('@/assets/sounds/lizard.wav'),
-
-  // Dinos
-  trex: require('@/assets/sounds/trex.wav'),
-  dino: require('@/assets/sounds/dino.wav'),
 };

@@ -7,16 +7,18 @@ import { CategoryCard } from '@/components/category-card';
 import { ThemedText } from '@/components/themed-text';
 import { ZoeyMascot } from '@/components/zoey-mascot';
 import {
-  Categories,
-  getAnimalsByCategory,
-  getCategory,
+  HomeGroups,
+  getAnimalColor,
+  getAnimalsByGroup,
+  getGroup,
+  type Animal,
   type CategoryId,
 } from '@/data/animals';
-import { BottomTabInset, Brand, Fonts, MaxContentWidth, Spacing } from '@/constants/theme';
+import { Brand, Fonts, MaxContentWidth, Spacing } from '@/constants/theme';
 
 /** Split a list into rows of two for an even 2-column grid. */
-function toRows<T>(items: T[]): [T, T?][] {
-  const rows: [T, T?][] = [];
+function toRows(items: Animal[]): [Animal, Animal?][] {
+  const rows: [Animal, Animal?][] = [];
   for (let i = 0; i < items.length; i += 2) {
     rows.push([items[i], items[i + 1]]);
   }
@@ -24,13 +26,13 @@ function toRows<T>(items: T[]): [T, T?][] {
 }
 
 export default function HomeScreen() {
-  const [selected, setSelected] = useState<CategoryId>(Categories[0].id);
-  const category = getCategory(selected);
-  const rows = toRows(getAnimalsByCategory(selected));
+  const [selected, setSelected] = useState<CategoryId | 'all'>('all');
+  const group = getGroup(selected);
+  const rows = toRows(getAnimalsByGroup(selected));
 
   return (
     <View style={styles.background}>
-      <SafeAreaView edges={['top']} style={styles.safeArea}>
+      <SafeAreaView edges={['top', 'bottom']} style={styles.safeArea}>
         <ScrollView
           contentContainerStyle={styles.content}
           showsVerticalScrollIndicator={false}>
@@ -42,7 +44,7 @@ export default function HomeScreen() {
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.categoryRow}>
-            {Categories.map((item) => (
+            {HomeGroups.map((item) => (
               <CategoryCard
                 key={item.id}
                 category={item}
@@ -53,15 +55,21 @@ export default function HomeScreen() {
           </ScrollView>
 
           <ThemedText style={styles.sectionTitle}>
-            {category.emoji} {category.name}
+            {group.emoji} {group.name}
           </ThemedText>
 
           <View style={styles.grid}>
             {rows.map((row, index) => (
               <View key={index} style={styles.gridRow}>
-                <AnimalCard animal={row[0]} color={category.color} />
+                <AnimalCard
+                  animal={row[0]}
+                  color={selected === 'all' ? getAnimalColor(row[0]) : group.color}
+                />
                 {row[1] ? (
-                  <AnimalCard animal={row[1]} color={category.color} />
+                  <AnimalCard
+                    animal={row[1]}
+                    color={selected === 'all' ? getAnimalColor(row[1]) : group.color}
+                  />
                 ) : (
                   <View style={styles.gridSpacer} />
                 )}
@@ -89,7 +97,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingHorizontal: Spacing.three,
     paddingTop: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.five,
+    paddingBottom: Spacing.five,
     gap: Spacing.three,
   },
   prompt: {
