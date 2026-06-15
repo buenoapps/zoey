@@ -9,6 +9,7 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "bundleIdentifier": "com.buenoapps.zoey",
+      "buildNumber": "1",
       "icon": "./assets/expo.icon",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
@@ -22,6 +23,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "package": "com.buenoapps.zoey",
+      "versionCode": 1,
       "predictiveBackGestureEnabled": false
     },
     "web": {

@@ -10,11 +10,12 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { ThemedText } from '@/components/themed-text';
+import { useI18n } from '@/context/language-provider';
 import { Brand, Fonts, Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 type ZoeyMascotProps = {
-  /** What Zoey says in her speech bubble. */
+  /** What Zoey says in her speech bubble. Defaults to the localized greeting. */
   message?: string;
 };
 
@@ -23,8 +24,10 @@ type ZoeyMascotProps = {
  * The face is an emoji; the oversized ears are drawn with rounded views and
  * the whole head does a gentle idle wiggle.
  */
-export function ZoeyMascot({ message = "Hi, I'm Zoey! Tap an animal to hear it! 🐾" }: ZoeyMascotProps) {
+export function ZoeyMascot({ message }: ZoeyMascotProps) {
   const theme = useTheme();
+  const { t } = useI18n();
+  const text = message ?? t('mascotMessage');
   const tilt = useSharedValue(0);
 
   useEffect(() => {
@@ -51,7 +54,7 @@ export function ZoeyMascot({ message = "Hi, I'm Zoey! Tap an animal to hear it! 
       </Animated.View>
 
       <View style={[styles.bubble, { backgroundColor: theme.bubbleBg }]}>
-        <ThemedText style={[styles.bubbleText, { color: theme.bubbleText }]}>{message}</ThemedText>
+        <ThemedText style={[styles.bubbleText, { color: theme.bubbleText }]}>{text}</ThemedText>
       </View>
     </View>
   );

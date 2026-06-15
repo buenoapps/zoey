@@ -2,22 +2,26 @@
 
 Zoey is a playful kids app for learning animals and hearing the sounds they make.
 Children meet **Zoey, a friendly dog with big ears** (she hears really well!), browse
-animals grouped into kid-friendly groups — **All, Pets, Farm, Wild, Birds, Bugs, Ocean,
+animals grouped into kid-friendly categories — **Pets, Farm, Wild, Birds, Bugs, Ocean,
 Reptiles** — and tap any animal to hear its sound and watch it wiggle. An animal can
-live in more than one group (a cat is both a pet and a farm animal).
+live in more than one category (a cat is both a pet and a farm animal).
 
-It's a single screen (no tabs): the **All** group shows every animal at once.
-The UI follows the system **light/dark** appearance.
+It's a single screen with a Settings page (gear button, top-right). The UI follows the
+system **light/dark** appearance and is translated into **English, German, Italian,
+Spanish, and Croatian** (UI text plus category and animal names; the little sound words
+like "Woof" stay in English).
 
 Built with [Expo](https://expo.dev) (SDK 56), expo-router, and `expo-audio`.
 
 ### How it's put together
 
-- `src/data/animals.ts` — the list of animals and groups (emoji + sound label).
+- `src/data/animals.ts` — the list of animals and categories (emoji + English sound word).
 - `src/data/sounds.ts` — a static `require` map from animal id → bundled audio file.
 - `src/context/sound-provider.tsx` — one shared `expo-audio` player; `useSound().playSound(id)`.
+- `src/i18n/` + `src/context/language-provider.tsx` — translations and `useI18n()` (`t`,
+  `tCategory`, `tAnimal`); the chosen language is persisted and defaults to the device locale.
 - `src/components/` — `zoey-mascot`, `category-card`, and `animal-card` (with a tap bounce).
-- `src/app/index.tsx` — the single Home screen: Zoey + group picker + animal grid.
+- `src/app/index.tsx` — the Home screen; `src/app/settings.tsx` — language, share, rate, and version.
 
 ### Sounds
 
